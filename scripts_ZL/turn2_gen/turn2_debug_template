@@ -1,0 +1,31 @@
+# task parameter
+task=gsm8k
+task=math
+
+# split parameter
+split=train
+split=test
+
+# model parameter
+model1=deepseek-math-7b-instruct
+model1_name=deepseek_math_7b_instruct
+port=21003
+
+model1=Llama-2-7b-chat-hf
+model1_name=llama2_7b_chat_hf
+port=21002
+
+model2=deepseek-chat
+model2_name=deepseek_v3
+
+
+python workflow_gen.py \
+    --data_path data/${task}/${split}.jsonl \
+    --env ${task} \
+    --log_dir log/${task}/ \
+    --max_turns 2 \
+    --num_of_samples 1 1 \
+    --controller_address ${port} \
+    --debug \
+    --model_suffix ${model1_name}_${model2_name}_${split}_debug \
+    --models ${model1} ${model2} &

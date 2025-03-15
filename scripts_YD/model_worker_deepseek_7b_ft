@@ -1,0 +1,2 @@
+
+nohup python -m fastchat.serve.model_worker --model-path model_finetuned --gpus 1 --num-gpus 1 --port 21005 > model_worker_deepseekmathft_log.out & 

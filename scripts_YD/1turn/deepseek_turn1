@@ -1,0 +1,10 @@
+python workflow_gen.py \
+    --data_path data/gsm8k/train.jsonl \
+    --env gsm8k \
+    --log_dir log/gsm8k/ \
+    --max_turns 1 \
+    --num_of_samples 1 1 \
+    --controller_address 21001 \
+    --debug \
+    --model_suffix ds_math_turn1 \
+    --models deepseek-ai/deepseek-math-7b-instruct &

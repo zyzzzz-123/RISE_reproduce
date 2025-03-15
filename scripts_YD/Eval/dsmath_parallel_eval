@@ -1,0 +1,8 @@
+python workflow_eval.py \
+    --model deepseek-ai/deepseek-math-7b-instruct \
+    --data_path data/gsm8k/test.jsonl \
+    --env gsm8k \
+    --log_dir eval_log/dsmath_gsm8k_p \
+    --max_turns 1 \
+    --controller_address 21004 \
+    --num_of_samples 5 &

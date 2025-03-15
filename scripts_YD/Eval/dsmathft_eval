@@ -1,0 +1,9 @@
+python workflow_eval.py \
+    --model model_finetuned \
+    --data_path data/gsm8k/test.jsonl \
+    --env gsm8k \
+    --log_dir eval_log/dsmathft_gsm8k \
+    --max_turns 5 \
+    --controller_address 21005 \
+    --num_of_samples 1 1 1 1 1 \
+    --context_window 2 &

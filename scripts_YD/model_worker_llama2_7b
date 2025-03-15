@@ -1,0 +1,3 @@
+export CUDA_VISIBLE_DEVICES=2
+
+nohup python -m fastchat.serve.model_worker --model-path meta-llama/Llama-2-7b-chat-hf --gpus 1 --num-gpus 1 --port 21006 > model_worker_llama2_log2.out & 

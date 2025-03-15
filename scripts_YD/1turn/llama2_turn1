@@ -1,0 +1,9 @@
+python workflow_gen.py \
+    --data_path data/gsm8k/train.jsonl \
+    --env gsm8k \
+    --log_dir log/gsm8k/ \
+    --max_turns 1 \
+    --num_of_samples 1 1 \
+    --controller_address 21003 \
+    --model_suffix llama2_turn1_hf \
+    --models meta-llama/Llama-2-7b-chat-hf &

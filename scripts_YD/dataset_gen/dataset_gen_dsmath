@@ -1,0 +1,8 @@
+python workflow_convert.py \
+    --filepath log/gsm8k/2_turns_deepseek_math_7b_instruct_deepseek_v3.json \
+    --output dataset/2_turns_deepseek_math_7b_instruct_deepseek_v3.json \
+    --model_path deepseek-ai/deepseek-math-7b-instruct \
+    --env gsm8k \
+    --criteria all \
+    --remove_duplication \
+    --shuffle 

@@ -1,0 +1,10 @@
+python workflow_gen.py \
+    --data_path data/math/train.jsonl \
+    --env math \
+    --log_dir log/math/ \
+    --max_turns 2 \
+    --num_of_samples 1 1 \
+    --controller_address 21003 \
+    --debug \
+    --model_suffix deepseek_math_7b_instruct_deepseek_v3_debug \
+    --models deepseek-math-7b-instruct deepseek-chat &

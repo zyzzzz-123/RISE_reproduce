@@ -1,0 +1,1 @@
+python -m fastchat.serve.model_worker --model-path deepseek-ai/deepseek-math-7b-instruct --port 21003 --worker-address http://localhost:21003 --gpus 0 --num-gpus 1  &

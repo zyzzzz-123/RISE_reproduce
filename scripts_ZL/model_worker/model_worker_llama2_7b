@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=1 python -m fastchat.serve.model_worker --model-path meta-llama/Llama-2-7b-chat-hf --gpus 1 --num-gpus 1 &
