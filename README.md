@@ -1,11 +1,10 @@
 # Recursive Introspection: Teaching Language Model Agents How to Self-Improve
 
-This is the official codebase of our paper ["Recursive Introspection: Teaching Language Model Agents How to Self-Improve
-"](https://arxiv.org/abs/2407.18219) by [Yuxiao Qu](https://cohenqu.github.io/), [Tianjun Zhang](https://tianjunz.github.io/), [Naman Garg](https://naman-garg.com/), and [Aviral Kumar](https://aviralkumar2907.github.io/). The following instruction has been tested on `Python 3.9.7` and `Python 3.11.6` with `CUDA 12.3`, using either 4x NVIDIA `A40` GPUs or 4x NVIDIA `A100` GPUs. For any questions/concerns related to this codebase, please reach out to [Yuxiao Qu](https://cohenqu.github.io/).
+This is a repo for CSE 517 Final Project, reproducing RISE: Teaching Language Model Agents How to Self-Improve.
+This repo is based on the original paper’s repo:  [https://github.com/cmu-mind/RISE](https://github.com/cmu-mind/RISE). 
 
-RISE is adapted from [FastChat](https://github.com/lm-sys/FastChat) with additional support for:
-- Finetuning with Reward-weighted Regression
-- Multi-turn evaluation in GSM8K and MATH codebase
+The commands for additional experiments beyond original paper are in the [Additional Experiments](#additional-experiments) section.
+
 
 ## Contents
 - [Install](#install)
@@ -13,6 +12,7 @@ RISE is adapted from [FastChat](https://github.com/lm-sys/FastChat) with additio
 - [Finetune](#finetune)
 - [Evaluate](#evaluate)
 - [Citation](#citation)
+- [Additional Experiments](#additional-experiments)
 ## Install
 
 ### Package
@@ -177,4 +177,57 @@ misc{qu2024recursiveintrospectionteachinglanguage,
 }
 ```
 
-We are also planning to add more environments and support more systems to this repository.
+## Additional Experiments
+We have done extended experiments deepseek-math-7b-instrcut to explore whether a math-specialized model benefits differently from RISE
+
+Command to generate 1 turn collection:
+```
+python workflow_gen.py \
+    --data_path data/gsm8k/train.jsonl \
+    --env gsm8k \
+    --log_dir log/gsm8k/ \
+    --max_turns 1 \
+    --num_of_samples 1 1 \
+    --controller_address 21001 \
+    --debug \
+    --model_suffix ds_math_turn1 \
+    --models deepseek-ai/deepseek-math-7b-instruct &
+```
+
+Command to finetune:
+```
+deepspeed --master_port 20007 FastChat/fastchat/train/train_mem.py \
+    --deepspeed deepspeed/zero3.json \
+    --model_name_or_path deepseek-ai/deepseek-math-7b-instruct \
+    --data_path dataset/2_turns_deepseek_math_7b_instruct_deepseek_v3.json \
+    --bf16 True \
+    --output_dir /model_finetuned \
+    --num_train_epochs 10 \
+    --per_device_train_batch_size 4 \
+    --per_device_eval_batch_size 1 \
+    --gradient_accumulation_steps 16 \
+    --evaluation_strategy "no" \
+    --save_strategy "steps" \
+    --save_steps 100 \
+    --save_total_limit 8 \
+    --learning_rate 1e-5 \
+    --weight_decay 0. \
+    --warmup_ratio 0.04 \
+    --lr_scheduler_type "cosine" \
+    --logging_steps 1 \
+    --tf32 True \
+    --model_max_length 2048 \
+    --gradient_checkpointing True \
+    --lazy_preprocess False &
+```
+Command to evaluate:
+```
+python workflow_eval.py \
+    --model deepseek-ai/deepseek-math-7b-instruct \
+    --data_path data/gsm8k/test.jsonl \
+    --env gsm8k \
+    --log_dir eval_log/dsmath_gsm8k_p \
+    --max_turns 1 \
+    --controller_address 21004 \
+    --num_of_samples 5 &
+```
